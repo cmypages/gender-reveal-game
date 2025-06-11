@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baby Gender Guessing Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-pink-100 min-h-screen">
+    <!-- Main Container -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Game Board -->
+        <h1 class="text-3xl font-bold text-center mb-8 text-pink-600">Choose a number</h1>
+        <div id="gameBoard" class="grid grid-cols-3 gap-6 max-w-3xl mx-auto hidden"></div>
+        
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg w-96">
+            <h2 class="text-2xl font-bold mb-4">Game Settings</h2>
+            <form onsubmit="submitGameSettings(event)">
+                <div class="mb-4">
+                    <label class="block mb-2">Number of Participants</label>
+                    <input type="number" id="participants" min="1" max="20" 
+                           class="w-full p-2 border rounded" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block mb-2">Baby's Gender</label>
+                    <select id="babyGender" class="w-full p-2 border rounded" required>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                    Start Game
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Result Message -->
+    <div id="resultMessage" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-lg text-center">
+            <h2 class="text-2xl font-bold mb-4" id="messageText"></h2>
+            <button onclick="closeMessage()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                OK
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let correctNumber;
+        let babyGender;
+        
+
+        function submitGameSettings(event) {
+            event.preventDefault();
+            const participants = parseInt(document.getElementById('participants').value);
+            babyGender = document.getElementById('babyGender').value;
+            
+            // Generate random correct number between 1 and participants
+            correctNumber = Math.floor(Math.random() * participants) + 1;
+            
+            // Generate game board
+            const gameBoard = document.getElementById('gameBoard');
+            gameBoard.innerHTML = '';
+            gameBoard.classList.remove('hidden');
+            
+            // Create flash cards
+            for(let i = 1; i <= participants; i++) {
+                gameBoard.appendChild(createFlashCard(i));
+            }
+            
+            // Hide modal
+            document.getElementById('settingsModal').classList.add('hidden');
+        }
+
+        function createFlashCard(number) {
+            const card = document.createElement('div');
+            card.className = 'bg-white/75 p-8 rounded-lg shadow-lg text-2xl font-bold cursor-pointer hover:bg-blue-50 transition-colors relative flex items-center justify-center min-h-48 min-w-48';
+            card.style.backgroundImage = "url('imgs/baby-draw.PNG')";
+            card.style.backgroundSize = 'contain';
+            card.style.backgroundBlendMode = 'multiply';
+            card.style.backgroundPosition = 'center';
+            card.innerHTML = `<div class="relative z-10 text-white text-5xl font-bold filter drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">${number}</div>`;
+
+            card.onclick = function() {
+                let rightAnswer = checkGuess(number);
+
+                if (rightAnswer) {
+                    this.classList.add('bg-green-200', 'opacity-75');
+                } else {
+                    this.classList.add('bg-yellow-200', 'opacity-75');
+                }
+
+                this.style.cursor = 'not-allowed';
+
+                showResultMessage(rightAnswer);
+            };
+            return card;
+        }
+
+        function checkGuess(guessedNumber) {
+            return guessedNumber === correctNumber;
+        }
+
+        function showResultMessage(rightAnswer) {
+            const messageText = document.getElementById('messageText');
+            const resultMessage = document.getElementById('resultMessage');
+            
+            if (rightAnswer) {
+
+                if (babyGender.toLowerCase() == 'male') {
+                    messageText.textContent = `YES! IT'S A BABY BOY !`;
+                } else {
+                    messageText.textContent = `YES! IT'S A BABY GIRL !`;
+                }
+                
+                messageText.classList.add('text-green-500');
+            } else {
+                messageText.textContent = 'Try again!';
+                messageText.classList.add('text-red-500');
+            }
+            
+            resultMessage.classList.remove('hidden');
+        }
+
+        function closeMessage() {
+            document.getElementById('resultMessage').classList.add('hidden');
+            document.getElementById('messageText').classList.remove('text-green-500', 'text-red-500');
+        }
+    </script>
+</body>
+</html>
