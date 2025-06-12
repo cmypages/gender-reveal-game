@@ -2,23 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Baby Gender Guessing Game</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-pink-100 min-h-screen">
+<body class="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
     <!-- Main Container -->
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
         <!-- Game Board -->
-        <h1 class="text-3xl font-bold text-center mb-8 text-pink-600">Escolha um número</h1>
-        <div id="gameBoard" class="grid grid-cols-3 gap-6 max-w-3xl mx-auto hidden"></div>
+        <h1 class="text-2xl sm:text-3xl font-bold text-center mb-4 sm:mb-8 text-pink-600">Escolha um número</h1>
+        <div id="gameBoard" class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-6 max-w-sm sm:max-w-3xl mx-auto hidden"></div>
         
     </div>
 
     <!-- Result Message -->
-    <div id="resultMessage" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-        <div class="bg-white p-8 rounded-lg text-center">
-            <h2 class="text-2xl font-bold mb-4" id="messageText"></h2>
+    <div id="resultMessage" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 hidden z-50">
+        <div class="bg-white p-4 sm:p-8 rounded-lg text-center w-full max-w-xs sm:max-w-md">
+            <h2 class="text-xl sm:text-2xl font-bold mb-4" id="messageText"></h2>
             <button onclick="closeMessage()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
                 OK
             </button>
@@ -52,12 +52,12 @@
 
         function createFlashCard(number) {
             const card = document.createElement('div');
-            card.className = 'bg-white/75 p-8 rounded-lg shadow-lg text-2xl font-bold cursor-pointer hover:bg-blue-50 transition-colors relative flex items-center justify-center min-h-48 min-w-48';
+            card.className = 'bg-white/75 p-4 sm:p-8 rounded-lg shadow-lg text-xl sm:text-2xl font-bold cursor-pointer hover:bg-blue-50 transition-colors relative flex items-center justify-center min-h-32 min-w-32 sm:min-h-48 sm:min-w-48';
             card.style.backgroundImage = "url('imgs/baby-draw.PNG')";
             card.style.backgroundSize = 'contain';
             card.style.backgroundBlendMode = 'multiply';
             card.style.backgroundPosition = 'center';
-            card.innerHTML = `<div class="relative z-10 text-white text-5xl font-bold filter drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">${number}</div>`;
+            card.innerHTML = `<div class="relative z-10 text-white text-4xl sm:text-5xl font-bold filter drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">${number}</div>`;
 
             card.onclick = function() {
                 let rightAnswer = checkGuess(number);
